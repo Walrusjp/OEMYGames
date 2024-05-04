@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VENTAS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Departamento de Ventas</h1>
+        
+        <form id="productForm">
+            <label for="category">Categoría:</label><br>
+            <select id="category" class="input-field">
+                <option value="Select">--Selecciona--</option>
+                <option value="Deportes">Deportes</option>
+                <option value="Shooter">Shooter</option>
+                <option value="RPG">RPG</option>
+                <option value="OpenWorld">Open World</option>
+            </select>
+            <br><br>
+            <label for="productName">Nombre del Producto:</label>
+            <input type="text" id="productName" class="input-field">
+            <br>
+            <button type="submit" class="button">Consultar</button>
+        </form>
+        
+        <div id="result" class="product-list"></div>
+    </div>
+    <img src="logo.png" class="logo"  alt="logo">
+    
+    <script>
+document.getElementById('productForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var category = document.getElementById('category').value;
+    var productName = document.getElementById('productName').value;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/PRUEBA/productos/' + category, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('user', 'ventas'); // usuario ventas
+    xhr.setRequestHeader('pass', 'ventas');
+
+    function filterProductsByName(products, name) {
+        if (!Array.isArray(products)) {
+            return [];
+        }
+        return products.filter(function(product) {
+            return product.toLowerCase().includes(name.toLowerCase());
+        });
+    }
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var products1 = JSON.parse(xhr.responseText);
+            var products = products1.data;
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+    
+            if (productName.trim() !== '') {
+                products = filterProductsByName(products, productName);
+            }
+    
+            if (products.length > 0) {
+                var productList = document.createElement('ul');
+                products.forEach(function(product) {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = product;
+                    productList.appendChild(listItem);
+                });
+                resultDiv.appendChild(productList);
+            } else {
+                resultDiv.textContent = 'No se encontraron productos.';
+            }
+        } else {
+            console.error('Error al obtener productos. Código de estado: ' + xhr.status);
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Ocurrió un error al obtener los productos. Por favor, intenta de nuevo más tarde.</p>';
+        }
+    };
+    
+    xhr.onerror = function() {
+        console.error('Error de red al obtener productos.');
+        var resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = '<p>Ocurrió un error de red al obtener los productos. Por favor, verifica tu conexión a internet e intenta de nuevo.</p>';
+    };
+
+    xhr.send();
+});
+
+
+        
+    </script>
+</body>
+</html>

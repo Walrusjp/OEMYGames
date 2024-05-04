@@ -1,0 +1,138 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(0, 0, 255, 0.1); /* Fondo translúcido */
+    overflow: hidden; /* Evita el scroll del body */
+}
+
+.container {
+    width: 400px;
+    max-height: 80vh; /* Altura máxima */
+    overflow-y: auto; /* Scroll vertical */
+    padding: 20px;
+    background-color: rgba(173, 216, 230, 0.8); /* Fondo translúcido azul pastel */
+    border-radius: 10px; /* Borde redondeado */
+}
+
+h1, h2 {
+    color: #333;
+    text-align: center; /* Texto centrado */
+}
+
+input[type="text"], input[type="password"], button {
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#login-result {
+    margin-top: 10px;
+    text-align: center; /* Texto centrado */
+    color: #333;
+}
+
+.product-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.product-list li {
+    margin-bottom: 5px;
+}
+
+input-field {
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+label {
+    font-weight: bolder;
+    text-align: center;
+}
+
+.button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.logo {
+    position: absolute;
+    top: 20px; /* Ajusta la posición vertical de la imagen */
+    left: 20px; /* Ajusta la posición horizontal de la imagen */
+    z-index: 9999; /* Asegura que la imagen esté en la parte superior */
+    width: 10%;
+}
+.container form {
+    border-radius: 10px; /* Bordes redondeados para el formulario */
+    padding: 20px;
+    background-color: rgba(173, 216, 230, 0.8); /* Fondo translúcido blanco */
+}
+
+.container form input[type="text"], .container form select {
+    border-radius: 5px; /* Bordes redondeados para los inputs y select */
+    width: calc(100% - 20px); /* Ancho total menos el padding */
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.container form button {
+    border-radius: 5px; /* Bordes redondeados para el botón */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: calc(100% - 20px); /* Ancho total menos el padding */
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.container form button:hover {
+    background-color: #0056b3;
+}
+
+.product-list {
+    border-radius: 5px; /* Bordes redondeados para la lista */
+    background-color: rgba(173, 216, 230, 0.8); /* Fondo translúcido blanco */
+    padding: 10px;
+    overflow-y: auto; /* Scroll vertical */
+    max-height: 200px; /* Altura máxima */
+}
+
+.product-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.product-list li {
+    margin-bottom: 5px;
+}

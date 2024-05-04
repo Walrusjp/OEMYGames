@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz Gráfica para la API</title>
+    <link rel="stylesheet" href="sryles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>OEMY GAMES</h1>
+        <div class="department-section">
+            <div class="department" id="almacen">
+                <h2>Departamento de Almacén</h2>
+                <form id="insert-form-almacen">
+                    <label for="product-name-almacen">Nombre del Producto:</label>
+                    <input type="text" id="product-name-almacen" required>
+                    <label for="product-category-almacen">Categoría del Producto:</label>
+                    <input type="text" id="product-category-almacen" required>
+                    <button type="submit">Insertar Producto</button>
+                    <button type="submit">Eliminar Producto</button>
+                    <button type="submit">Actualizar Producto</button>
+                </form>
+                <button id="show-products-almacen">Mostrar Productos</button>
+                <h3>Lista de Productos</h3>
+                <ul id="product-list-almacen"></ul>
+            </div>
+        </div>
+    </div>
+    <img src="logo.png" class="logo"  alt="logo">
+    <!--<script src="script.js"></script>-->
+    <script src="almacenScript.js"></script>
+</body>
+</html>
