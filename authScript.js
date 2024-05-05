@@ -4,32 +4,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value; 
         const password = document.getElementById("password").value;
 
         try {
-            const response = await fetch("/PRUEBA/autenticacion", {
+            const response = await fetch("/auth", {
                 method: "POST",
                 headers: {
-                    "user": username,
-                    "pass": password
-                }
+                    "Content-Type": "application/json" 
+                },
+                body: JSON.stringify({ 
+                    email: email,
+                    password: password  
+                })
             });
 
             const data = await response.json();
             loginResult.textContent = data.message;
 
-            if (data.status === "success") {
-                // Redireccionar a la interfaz de usuario correspondiente según el rol
-                if (username === "ventas") {
-                    window.location.href = "/ventas.html";
-                } else if (username === "almacen") {
-                    window.location.href = "/almacen.html";
-                }
+            if (response.ok) {
+                // Redirigir al usuario después de una autenticación exitosa
+                window.location.href = "/home.html";
             }
         } catch (error) {
-            console.error("Error during login:", error);
-            loginResult.textContent = "Error during login. Please try again.";
+            console.error("Error durante el inicio de sesión:", error);
+            loginResult.textContent = "Error durante el inicio de sesión. Por favor, inténtalo de nuevo.";
         }
     });
 });
