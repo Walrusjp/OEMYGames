@@ -2,155 +2,24 @@
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
     use Slim\Factory\AppFactory;
+    use Slim\Middleware\BodyParsingMiddleware;
 
     require __DIR__ . '/vendor/autoload.php';
 
     $app = AppFactory::create();
-    $app->setBasePath("/PRUEBA");
-
-    $usuarios = array(
-        'ventas' => '530b350d414da3378a15b3149b322908',
-        'almacen' => '4e210009a1cfbf891ee1a8f75f441e2f'
-    );
-
-    $productos = array(
-        'Deportes' => array(
-            'SPRT-001'=> 'FIFA 23',
-            'SPRT-002'=> 'NBA 2K24',
-            'SPRT-003'=> 'Madden NFL 24'
-    ),
-        'Shooter' => array(
-            'SHTR-004'=> 'Call of Duty: Warzone',
-            'SHTR-005'=> 'Halo Infinite',
-            'SHTR-006'=> 'Destiny 2'
-    ),
-        'RPG' => array(
-            'RPG-007'=> 'Elden Ring',
-            'RPG-008'=> 'The Witcher 3: Wild Hunt',
-            'RPG-009'=> 'Final Fantasy XVI'
-    ),
-        'OpenWorld' => array(
-            'OPNW-010'=> 'Red Dead Redemption 2',
-            'OPNW-011'=> 'The Legend of Zelda: Breath of the Wild',
-            'OPNW-012'=> 'Grand Theft Auto V'
-    ));
-
-    $detalles = array(
-        'SPRT-001' => array(
-            'ID' => 'SPRT-001',
-            'Nombre' => 'FIFA 23',
-            'Desarrollador' => 'EA Sports',
-            'Consola' => 'PlayStation 5, Xbox Series X/S, PC, Stadia',
-            'Fecha' => '30-09-2022',
-            'Precio' => '1399 MXN',
-            'Descuento' => '0'
-        ),
-        'SPRT-002' => array(
-            'ID' => 'SPRT-002',
-            'Nombre' => 'NBA 2K24',
-            'Desarrollador' => 'Visual Concepts',
-            'Consola' => 'PlayStation 4, PlayStation 5, Xbox One, Xbox Series X/S, Nintendo Switch, PC',
-            'Fecha' => '08-09-2024',
-            'Precio' => '1499 MXN',
-            'Descuento' => '15%'
-        ),
-        'SPRT-003' => array(
-            'ID' => 'SPRT-003',
-            'Nombre' => 'Madden NFL 24',
-            'Desarrollador' => 'EA Tiburon',
-            'Consola' => 'PlayStation 5, Xbox Series X/S, PC',
-            'Fecha' => '18-08-2023',
-            'Precio' => '1399 MXN',
-            'Descuento' => '5%'
-        ),
-        'SHTR-004' => array(
-            'ID' => 'SHTR-004',
-            'Nombre' => 'Call of Duty: Warzone',
-            'Desarrollador' => 'Infinity Ward, Raven Software',
-            'Consola' => 'PlayStation 4, PlayStation 5, Xbox One, Xbox Series X/S, PC',
-            'Fecha' => '10-03-2020',
-            'Precio' => 'Gratis',
-            'Descuento' => '0'
-        ),
-        'SHTR-005' => array(
-            'ID' => 'SHTR-005',
-            'Nombre' => 'Halo Infinite',
-            'Desarrollador' => '343 Industries',
-            'Consola' => 'Xbox One, Xbox Series X/S, PC',
-            'Fecha' => '08-12-2021',
-            'Precio' => '1299 MXN',
-            'Descuento' => '20%'
-        ),
-        'SHTR-006' => array(
-            'ID' => 'SHTR-006',
-            'Nombre' => 'Destiny 2',
-            'Desarrollador' => 'Bungie',
-            'Consola' => 'PlayStation 4, Xbox One, PC',
-            'Fecha' => '06-09-2017',
-            'Precio' => 'Gratis',
-            'Descuento' => '0'
-        ),
-        'RPG-007' => array(
-            'ID' => 'RPG-007',
-            'Nombre' => 'Elden Ring',
-            'Desarrollador' => 'FromSoftware',
-            'Consola' => 'PlayStation 4, PlayStation 5, Xbox One, Xbox Series X/S, PC',
-            'Fecha' => '25-02-2022',
-            'Precio' => '1599 MXN',
-            'Descuento' => '0'
-        ),
-        'RPG-008' => array(
-            'ID' => 'RPG-008',
-            'Nombre' => 'The Witcher 3: Wild Hunt',
-            'Desarrollador' => 'CD Projekt',
-            'Consola' => 'PlayStation 4, Xbox One, PC',
-            'Fecha' => '19-05-2015',
-            'Precio' => '899 MXN',
-            'Descuento' => '30%'
-        ),
-        'RPG-009' => array(
-            'ID' => 'RPG-009',
-            'Nombre' => 'Final Fantasy XVI',
-            'Desarrollador' => 'Square Enix',
-            'Consola' => 'PlayStation 5',
-            'Fecha' => '16-06-2023',
-            'Precio' => '1799 MXN',
-            'Descuento' => '0'
-        ),
-        'OPNW-010' => array(
-            'ID' => 'OPNW-010',
-            'Nombre' => 'Red Dead Redemption 2',
-            'Desarrollador' => 'Rockstar Games',
-            'Consola' => 'PlayStation 4, Xbox One, PC',
-            'Fecha' => '26-10-2018',
-            'Precio' => '1599 MXN',
-            'Descuento' => '20%'
-        ),
-        'OPNW-011' => array(
-            'ID' => 'OPNW-011',
-            'Nombre' => 'The Legend of Zelda: Breath of the Wild',
-            'Desarrollador' => 'Nintendo',
-            'Consola' => 'Nintendo Switch',
-            'Fecha' => '03-03-2017',
-            'Precio' => '1399 MXN',
-            'Descuento' => '10%'
-        ),
-        'OPNW-012' => array(
-            'ID' => 'OPNW-012',
-            'Nombre' => 'Grand Theft Auto V',
-            'Desarrollador' => 'Rockstar North',
-            'Consola' => 'PlayStation 3, PlayStation 4, Xbox 360, Xbox One, PC',
-            'Fecha' => '17-09-2013',
-            'Precio' => '999 MXN',
-            'Descuento' => '0'
-        )
-    );
+    $app->addBodyParsingMiddleware();
+    $app->setBasePath("/OEMYGames");
     
     function Authentication($user, $pass) {
-        global $usuarios;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/usuarios.json');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $usuarios = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+    
         $isUser = false;
         $isPass = false;
-        
+    
         if (array_key_exists($user, $usuarios)) {
             $isUser = true;
             if ($usuarios[$user] === md5($pass)) {
@@ -161,25 +30,17 @@
         } else {
             return json_encode(['code'=>'401', 'message'=>'Usuario no reconocido', 'status'=>'error']);
         }
-
+    
         return json_encode(['code'=>'200', 'message'=>'Atenticacion exitosa', 'status'=>'success']);
     };
         
-    $app->post('/autenticacion', function ($request, $response, $args) {
-
-        $user = $request->getHeader('user')[0];
-        $pass = $request->getHeader('pass')[0];
-    
-        $resAuth = Authentication($user, $pass);
-        $resAuthObj = json_decode($resAuth);
-        $response->getBody()->write($resAuth);
-    
-        return $response;
-    });
-
     $app->get('/productos[/{categoria}]', function (Request $request, Response $response, $args) {
 
-        global $productos;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/productos.json');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $productos = json_decode(curl_exec($ch), true);
+        curl_close($ch);
     
         $user = $request->getHeader('user')[0];
         $pass = $request->getHeader('pass')[0];
@@ -213,7 +74,11 @@
     
     $app->get('/detalles[/{clave}]', function (Request $request, Response $response, $args) {
 
-        global $detalles;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/detalles.json');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $detalles = json_decode(curl_exec($ch), true);
+        curl_close($ch);
     
         $user = $request->getHeader('user')[0];
         $pass = $request->getHeader('pass')[0];
@@ -248,6 +113,7 @@
     });
 
     $app->post('/producto/{categoria}', function ($request, $response, $args) {
+
         $user = $request->getHeader('user')[0];
         $pass = $request->getHeader('pass')[0];
     
@@ -255,62 +121,95 @@
         $resAuthObj = json_decode($resAuth);
     
         if ($resAuthObj->status !== 'error') {
-            $categoria = strtolower($args['categoria']);
+            $categoria = $args['categoria'];
+            $data = $request->getParsedBody();
     
-            $response->getBody()->write(json_encode([
-                "code" => "200",
-                "message" => "Operacion exitosa",
-                "status" => "success"
-            ]));
-        } else {
-            $response->getBody()->write($resAuth);
-        }
+            $camposRequeridos = ['Consola', 'Desarrollador', 'Descuento', 'Fecha', 'ID', 'Nombre', 'Precio'];
+            foreach ($camposRequeridos as $campo) {
+                if (!isset($data[$campo])) {
+                    $response->getBody()->write(json_encode([
+                        "code" => "400",
+                        "message" => "Bad Request, los datos enviados estan mal formados",
+                        "status" => "error"
+                    ]));
+                    return $response;
+                }
+            }
     
-        return $response;
-    });
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/productos.json');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $categorias = json_decode(curl_exec($ch), true);
+            curl_close($ch);
     
-    $app->put('/producto/detalles/{clave}', function ($request, $response, $args) {
-        
-        $user = $request->getHeader('user')[0];
-        $pass = $request->getHeader('pass')[0];
+            $categoriaEncontrada = '';
+            foreach ($categorias as $cat => $productos) {
+                if (strcasecmp($cat, $categoria) == 0) {
+                    $categoriaEncontrada = $cat;
+                    break;
+                }
+            }
     
-        
-        $resAuth = Authentication($user, $pass);
-        $resAuthObj = json_decode($resAuth);
+            if ($categoriaEncontrada !== '') {
+                $idExiste = false;
+                foreach ($categorias as $productos) {
+                    if (array_key_exists($data['ID'], $productos)) {
+                        $idExiste = true;
+                        break;
+                    }
+                }
     
-   
-        if ($resAuthObj->status !== 'error') {
-           
-            $clave = strtoupper($args['clave']);
+                if (!$idExiste) {
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/productos/' . $categoriaEncontrada . '.json');
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([$data['ID'] => $data['Nombre']]));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $resProd = curl_exec($ch);
     
-           
-            $body = $request->getBody()->getContents();
-            $detalles = json_decode($body, true);
+                    curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/detalles.json');
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([$data['ID'] => $data]));
+                    $resDet = curl_exec($ch);
+                    curl_close($ch);
     
-            if ($detalles) {
-                $response->getBody()->write(json_encode([
-                    "code" => "200",
-                    "message" => "Detalles del producto actualizados exitosamente",
-                    "data" => $detalles,
-                    "status" => "success"
-                ]));
+                    if ($resProd !== false && $resDet !== false) {
+                        $response->getBody()->write(json_encode([
+                            "code" => "201",
+                            "message" => "Producto insertado correctamente",
+                            "data" => date('Y-m-d H:i:s'),
+                            "status" => "success"
+                        ]));
+                    } else {
+                        $response->getBody()->write(json_encode([
+                            "code" => "400",
+                            "message" => "Bad Request",
+                            "status" => "error"
+                        ]));
+                    }
+                } else {
+                    $response->getBody()->write(json_encode([
+                        "code" => "409",
+                        "message" => "Conflict, el ID del producto ya existe",
+                        "status" => "error"
+                    ]));
+                }
             } else {
-             
                 $response->getBody()->write(json_encode([
-                    "code" => "400",
-                    "message" => "Formato JSON invalido en el cuerpo de la solicitud",
+                    "code" => "404",
+                    "message" => "Categoria no encontrada",
                     "status" => "error"
                 ]));
             }
         } else {
-           
             $response->getBody()->write($resAuth);
         }
     
         return $response;
     });
+   
+    $app->put('/producto/detalles/{clave}', function ($request, $response, $args) {
 
-    $app->delete('/producto/{clave}', function ($request, $response, $args) {
         $user = $request->getHeader('user')[0];
         $pass = $request->getHeader('pass')[0];
     
@@ -318,23 +217,131 @@
         $resAuthObj = json_decode($resAuth);
     
         if ($resAuthObj->status !== 'error') {
-          
-            $clave = strtoupper($args['clave']);
+            $clave = $args['clave'];
+            $data = $request->getParsedBody();
     
-            $response->getBody()->write(json_encode([
-                "code" => "200",
-                "message" => "Producto eliminado exitosamente",
-                "status" => "success"
-            ]));
+            $camposRequeridos = ['Consola', 'Desarrollador', 'Descuento', 'Fecha', 'ID', 'Nombre', 'Precio'];
+            $campoEncontrado = false;
+            foreach ($camposRequeridos as $campo) {
+                if (isset($data[$campo])) {
+                    $campoEncontrado = true;
+                    break;
+                }
+            }
+    
+            if ($campoEncontrado) {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/detalles.json');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $detalles = json_decode(curl_exec($ch), true);
+                curl_close($ch);
+    
+                if (array_key_exists($clave, $detalles)) {
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/detalles/' . $clave . '.json');
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $resDet = curl_exec($ch);
+                    curl_close($ch);
+    
+                    if ($resDet !== false) {
+                        $response->getBody()->write(json_encode([
+                            "code" => "200",
+                            "message" => "Producto actualizado correctamente",
+                            "data" => date('Y-m-d H:i:s'),
+                            "status" => "success"
+                        ]));
+                    } else {
+                        $response->getBody()->write(json_encode([
+                            "code" => "400",
+                            "message" => "Bad Request",
+                            "status" => "error"
+                        ]));
+                    }
+                } else {
+                    $response->getBody()->write(json_encode([
+                        "code" => "404",
+                        "message" => "Producto no encontrado",
+                        "status" => "error"
+                    ]));
+                }
+            } else {
+                $response->getBody()->write(json_encode([
+                    "code" => "400",
+                    "message" => "Bad Request, los datos enviados estan mal formados",
+                    "status" => "error"
+                ]));
+            }
         } else {
-            
             $response->getBody()->write($resAuth);
         }
     
         return $response;
     });
     
-    
+    $app->delete('/producto/{clave}', function ($request, $response, $args) {
 
-    $app->run();
+        $user = $request->getHeader('user')[0];
+        $pass = $request->getHeader('pass')[0];
+    
+        $resAuth = Authentication($user, $pass);
+        $resAuthObj = json_decode($resAuth);
+    
+        if ($resAuthObj->status !== 'error') {
+            $clave = $args['clave'];
+    
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/productos.json');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $categorias = json_decode(curl_exec($ch), true);
+            curl_close($ch);
+    
+            $categoriaEncontrada = '';
+            foreach ($categorias as $categoria => $productos) {
+                if (array_key_exists($clave, $productos)) {
+                    $categoriaEncontrada = $categoria;
+                    break;
+                }
+            }
+            if ($categoriaEncontrada !== '') {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/productos/' . $categoriaEncontrada . '/' . $clave . '.json');
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $resProd = curl_exec($ch);
+    
+                curl_setopt($ch, CURLOPT_URL, 'https://oemygames-default-rtdb.firebaseio.com/detalles/' . $clave . '.json');
+                $resDet = curl_exec($ch);
+                curl_close($ch);
+    
+                if ($resProd !== false && $resDet !== false) {
+                    $response->getBody()->write(json_encode([
+                        "code" => "200",
+                        "message" => "Producto eliminado correctamente",
+                        "data" => date('Y-m-d H:i:s'),
+                        "status" => "success"
+                    ]));
+                } else {
+                    $response->getBody()->write(json_encode([
+                        "code" => "400",
+                        "message" => "Bad request",
+                        "status" => "error"
+                    ]));
+                }
+            } else {
+                $response->getBody()->write(json_encode([
+                    "code" => "404",
+                    "message" => "El producto especificado no existe",
+                    "status" => "error"
+                ]));
+            }
+        } else {
+            $response->getBody()->write($resAuth);
+        }
+
+        return $response;
+    });    
+   
+      $app->run();
 ?>
