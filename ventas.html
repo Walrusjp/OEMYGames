@@ -31,67 +31,107 @@
     <img src="logo.png" class="logo"  alt="logo">
     
     <script>
-document.getElementById('productForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+        document.getElementById('productForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-    var category = document.getElementById('category').value;
-    var productName = document.getElementById('productName').value;
+            var category = document.getElementById('category').value;
+            var productName = document.getElementById('productName').value;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/PRUEBA/productos/' + category, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('user', 'ventas'); // usuario ventas
-    xhr.setRequestHeader('pass', 'ventas');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/PRUEBA/productos/' + category, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('user', 'ventas'); // usuario ventas
+            xhr.setRequestHeader('pass', 'ventas');
+            //var username = 'ventas';
+            //var password = '530b350d414da3378a15b3149b322908';
+            //xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ":" + password));
 
-    function filterProductsByName(products, name) {
-        if (!Array.isArray(products)) {
-            return [];
-        }
-        return products.filter(function(product) {
-            return product.toLowerCase().includes(name.toLowerCase());
+            function filterProductsByName(products, name) {
+                var filteredProducts = {};
+                for (var id in products) {
+                    if (products[id].toLowerCase().includes(name.toLowerCase())) {
+                        filteredProducts[id] = products[id];
+                    }
+                }
+                return filteredProducts;
+            }
+            
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var products = JSON.parse(xhr.responseText);
+                    console.log(products); //verificacion 
+                    var resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = '';
+            
+                    // Verifica si productName está definido
+                    var filteredProducts = products.data;
+                    if (productName.trim() !== '') {
+                        filteredProducts = filterProductsByName(products.data, productName);
+                    }
+            
+                    // Verifica si hay productos para mostrar
+                    if (Object.keys(filteredProducts).length > 0) {
+                        var productList = document.createElement('ul');
+                        for (var id in filteredProducts) {
+                            // Hacer una segunda solicitud para obtener los detalles del producto
+                            var xhrDetails = new XMLHttpRequest();
+                            xhrDetails.open('GET', '/PRUEBA/detalles/' + id, true);
+                            xhrDetails.setRequestHeader('Content-Type', 'application/json');
+                            xhrDetails.setRequestHeader('user', 'ventas'); // usuario ventas
+                            xhrDetails.setRequestHeader('pass', 'ventas');
+            
+                            xhrDetails.onload = function() {
+                                if (xhrDetails.status === 200) {
+                                    var productDetails = JSON.parse(xhrDetails.responseText);
+                                    var listItem = document.createElement('li');
+                                    listItem.innerHTML = 
+                                        'ID: ' + productDetails.data.ID + '<br />' +
+                                        'Nombre: ' + productDetails.data.Nombre + '<br />' +
+                                        'Desarrollador: ' + productDetails.data.Desarrollador + '<br />' +
+                                        'Consola: ' + productDetails.data.Consola + '<br />' +
+                                        'Fecha: ' + productDetails.data.Fecha + '<br />' +
+                                        'Precio: ' + productDetails.data.Precio + '<br />' +
+                                        'Descuento: ' + productDetails.data.Descuento;
+                                    productList.appendChild(listItem);
+                                } else {
+                                    console.error('Error al obtener detalles del producto. Código de estado: ' + xhrDetails.status);
+                                }
+                            };
+            
+                            xhrDetails.onerror = function() {
+                                console.error('Error de red al obtener detalles del producto.');
+                            };
+            
+                            xhrDetails.send();
+                        }
+                        resultDiv.appendChild(productList);
+                    } else {
+                        // Muestra un mensaje si no se encuentran productos
+                        resultDiv.textContent = 'No se encontraron productos.';
+                        console.log("No encontraron productos que coinciden con la búsqueda.");
+                    }
+                } else {
+                    // Maneja errores de solicitud
+                    console.error('Error al obtener productos. Código de estado: ' + xhr.status);
+                    var resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = '<p>Ocurrió un error al obtener los productos. Por favor, intenta de nuevo más tarde.</p>';
+                }
+            };
+            
+            
+            
+            
+            
+            xhr.onerror = function() {
+                console.error('Error de red al obtener productos.');
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '<p>Ocurrió un error de red al obtener los productos. Por favor, verifica tu conexión a internet e intenta de nuevo.</p>';
+            };
+
+            xhr.send();
         });
-    }
 
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var products1 = JSON.parse(xhr.responseText);
-            var products = products1.data;
-            var resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '';
-    
-            if (productName.trim() !== '') {
-                products = filterProductsByName(products, productName);
-            }
-    
-            if (products.length > 0) {
-                var productList = document.createElement('ul');
-                products.forEach(function(product) {
-                    var listItem = document.createElement('li');
-                    listItem.textContent = product;
-                    productList.appendChild(listItem);
-                });
-                resultDiv.appendChild(productList);
-            } else {
-                resultDiv.textContent = 'No se encontraron productos.';
-            }
-        } else {
-            console.error('Error al obtener productos. Código de estado: ' + xhr.status);
-            var resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '<p>Ocurrió un error al obtener los productos. Por favor, intenta de nuevo más tarde.</p>';
-        }
-    };
-    
-    xhr.onerror = function() {
-        console.error('Error de red al obtener productos.');
-        var resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = '<p>Ocurrió un error de red al obtener los productos. Por favor, verifica tu conexión a internet e intenta de nuevo.</p>';
-    };
-
-    xhr.send();
-});
-
-
-        
     </script>
 </body>
 </html>
