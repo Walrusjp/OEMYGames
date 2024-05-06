@@ -29,7 +29,7 @@ def login():
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
             }, 'ARGON2', algorithm='HS256')
 
-            return jsonify({'message': 'Credenciales correctas', 'token': token}), 200
+            return jsonify({'message': 'Credenciales correctas', 'token': token, 'user': user_id}), 200
 
     return jsonify({'error': 'Credenciales incorrectas'}), 401
 

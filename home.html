@@ -24,31 +24,38 @@
     </div>
     <img src="logo.png" class="logo"  alt="logo">
     <script>
-    $(document).ready(function(){
-        $("#loginForm form").on('submit', function(e){
-            e.preventDefault();
-
-            var formData = {
-                email: $('#email').val(),
-                pass: $('#pass').val()
-            };
-
-            $.ajax({
-                url: 'http://localhost:8000/auth',
-                type: 'post',
-                data: JSON.stringify(formData),
-                contentType: 'application/json',
-                success: function(data){
-                    localStorage.setItem('token', data.token);
-                    alert('El token enviado a ventas.html es: ' + data.token);
-                    window.location.href = 'http://localhost/OEMYGames/ventas.html';
-                },
-                error: function(){
-                    alert('Error al iniciar sesión');
-                }
+        $(document).ready(function(){
+            $("#loginForm form").on('submit', function(e){
+                e.preventDefault();
+        
+                var formData = {
+                    email: $('#email').val(),
+                    pass: $('#pass').val()
+                };
+        
+                $.ajax({
+                    url: 'http://localhost:8000/auth',
+                    type: 'post',
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json',
+                    success: function(data){
+                        localStorage.setItem('token', data.token);
+                        alert('El token enviado es: ' + data.token);
+        
+                        if (data.user === 'ventas') {
+                            window.location.href = 'http://localhost/OEMYGames/ventas.html';
+                        } else if (data.user === 'almacen') {
+                            window.location.href = 'http://localhost/OEMYGames/almacen.html';
+                        } else {
+                            window.location.href = 'http://localhost/OEMYGames/dashboard.html';
+                        }
+                    },
+                    error: function(){
+                        alert('Error al iniciar sesión');
+                    }
+                });
             });
         });
-    });
-    </script>
+        </script>
 </body>
 </html>
