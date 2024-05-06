@@ -40,7 +40,7 @@
                 contentType: 'application/json',
                 success: function(data){
                     localStorage.setItem('token', data.token);
-                    alert('El token enviado a profile.html es: ' + data.token);
+                    alert('El token enviado a ventas.html es: ' + data.token);
                     window.location.href = 'http://localhost/OEMYGames/ventas.html';
                 },
                 error: function(){
