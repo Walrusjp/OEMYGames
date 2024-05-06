@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interfaz Gráfica para la API</title>
+    <title>LOGIN</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <div class="container">
         <h1>OEMY GAMES</h1>
         <div class="login-section">
-            <div id="login-form">
+            <div id="loginForm">
                 <h2>Iniciar Sesión</h2>
                 <form>
-                    <input type="text" id="username" placeholder="Usuario" required>
-                    <input type="password" id="password" placeholder="Contraseña" required>
+                    <input type="text" id="email" placeholder="Email" required>
+                    <input type="password" id="pass" placeholder="Contraseña" required>
                     <button type="submit">Iniciar Sesión</button>
                 </form>
                 <p id="login-result"></p>
@@ -22,7 +23,32 @@
         </div>
     </div>
     <img src="logo.png" class="logo"  alt="logo">
-    <!--<script src="script.js"></script>-->
-    <script src="authScript.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("#loginForm form").on('submit', function(e){
+            e.preventDefault();
+
+            var formData = {
+                email: $('#email').val(),
+                pass: $('#pass').val()
+            };
+
+            $.ajax({
+                url: 'http://localhost:8000/auth',
+                type: 'post',
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function(data){
+                    localStorage.setItem('token', data.token);
+                    alert('El token enviado a profile.html es: ' + data.token);
+                    window.location.href = 'http://localhost/OEMYGames/ventas.html';
+                },
+                error: function(){
+                    alert('Error al iniciar sesión');
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>
