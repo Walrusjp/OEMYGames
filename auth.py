@@ -1,15 +1,18 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import hashlib
 import requests
+import jwt
+import datetime
 
 app = Flask(__name__)
+CORS(app)
 
-# Ruta para la autenticación
 @app.route('/auth', methods=['POST'])
 def login():
     data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
+    email = data['email']
+    password = data['pass']
 
     if not email or not password:
         return jsonify({'error': 'Faltan datos'}), 400
@@ -20,21 +23,15 @@ def login():
     users = response.json()
 
     for user_id, user_data in users.items():
-        if user_data.get('email') == email and user_data.get('pass') == hashed_password:
-            # Simulación de token seguro
-            token = 'token_seguro'
-            # Redirigir a la ruta de verificación con el token
+        if user_data['email'] == email and user_data['pass'] == hashed_password:
+            token = jwt.encode({
+                'user_id': user_id,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
+            }, 'ARGON2', algorithm='HS256')
+
             return jsonify({'message': 'Credenciales correctas', 'token': token}), 200
 
     return jsonify({'error': 'Credenciales incorrectas'}), 401
-
-# Ruta para la verificación del token
-@app.route('/verification', methods=['POST'])
-def verify_token():
-    data = request.get_json()
-    token = data.get('token')
-
-    return jsonify({'message': 'Token verificado correctamente'}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
