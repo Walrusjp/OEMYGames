@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGISTRO</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>OEMY GAMES</h1>
+        <div class="register-section">
+            <div id="registerForm">
+                <h2>Registrar Nuevo Usuario</h2>
+                <form id="myForm">
+                    <input type="text" name="user" placeholder="Usuario" required>
+                    <input type="text" name="nombre" placeholder="Nombre" required>
+                    <input type="text" name="email" placeholder="Email" required>
+                    <input type="password" name="pass" placeholder="Contraseña" required>
+                    <button type="submit">Enviar</button>
+                </form>
+                <p id="register-result"></p>
+            </div>
+        </div>
+    </div>
+    <img src="logo.png" class="logo"  alt="logo">
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            var object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            });
+            var json = JSON.stringify(object);
+
+            fetch('http://127.0.0.1:5000/Registro', {
+                method: 'POST',
+                body: json,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function(response) {
+                if(response.status === 201) {
+                    return response.text();
+                } else {
+                    throw response;
+                }
+            }).then(function(texto) {
+                alert("Registro exitoso, ahora puedes iniciar sesión");
+                window.location.href = "http://localhost/OEMYGames/home.html";
+            }).catch(function(response) {
+                response.text().then(function(text) {
+                    document.getElementById('register-result').innerText = text;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
